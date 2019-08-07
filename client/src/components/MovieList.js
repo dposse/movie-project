@@ -1,30 +1,61 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Movie from "./Movie";
+import InfiniteScroll from 'react-infinite-scroller';
 import { connect } from "react-redux";
 import * as actions from '../actions';
 import _ from "lodash";
 
 class MovieList extends Component {  
-  componentDidMount () {
-    this.props.fetchMovies()
+  constructor() {
+    super();
+
+    this.state = {
+      hasMoreItems: true
+    };
+
+    this.loadItems = this.loadItems.bind(this);
+  }
+
+  loadItems(page) {
+    if (page < this.props.totalPages || this.props.totalPages === 0) {
+      this.props.fetchMovies(page);
+    } else {
+      this.setState({ hasMoreItems: false });
+    }
   }
 
   render() {
-    const movies = _.map(this.props.movies, (m) => {
-      return <Movie id={m.id} key={m.id} title={m.title} img={m.poster_path} />
-    });
+    if (this.props.order === undefined || this.props.movies === undefined) {
+      return (
+        <div>Loading...</div>
+      )
+    }
+
+    const movies = this.props.order.map(m => {
+      const movie = this.props.movies[m]
+      return <Movie id={movie.id} key={movie.id} title={movie.title} img={movie.poster_path} />
+    })
 
     return (
-      <MovieGrid>
-        {movies}
-      </MovieGrid>
+      <InfiniteScroll
+        loadMore={this.loadItems}
+        hasMore={this.state.hasMoreItems}
+      >
+        <MovieGrid>
+          {movies}
+        </MovieGrid>
+      </InfiniteScroll> 
     );
   }
 }
 
 function mapStateToProps (state) {
-  return { movies: state.movies, totalPages: state.total_pages }
+  return { 
+    movies: state.movies, 
+    order: state.movies_order,
+    totalPages: state.total_pages 
+  }
 };
 
 export default connect(
