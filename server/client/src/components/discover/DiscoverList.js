@@ -30,8 +30,9 @@ class DiscoverList extends Component {
   }
 
   render() {
-    const movies = _.map(this.props.movies, (m) => {
-      return <Movie path={''} id={m.id} key={m.id} title={m.title} img={m.poster_path} />
+    const movies = this.props.movie_order.map((m) => {
+      const movie = this.props.movies[m];
+      return <Movie path={''} id={movie.id} key={movie.id} title={movie.title} img={movie.poster_path} />
     });
 
     return (
@@ -48,7 +49,7 @@ class DiscoverList extends Component {
 }
 
 function mapStateToProps (state) {
-  return { movies: state.movies, totalPages: state.total_pages }
+  return { movies: state.movies, movie_order: state.movie_order, totalPages: state.total_pages }
 };
 
 export default connect(
