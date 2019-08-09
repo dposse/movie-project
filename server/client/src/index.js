@@ -8,8 +8,10 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers/index";
-import MovieList from './components/MovieList'
-import MovieDetail from './components/MovieDetail'
+import DiscoverList from './components/discover/DiscoverList'
+import DiscoverDetail from './components/discover/DiscoverDetail'
+import WatchList from './components/watch-list/WatchList'
+import WatchListDetail from './components/watch-list/WatchListDetail'
 import Signup from './components/auth/Signup';
 import Signin from './components/auth/Signin';
 
@@ -22,10 +24,15 @@ render(
         <Nav />
         <App>
           <Switch>
-            <Route exact path="/" component={MovieList} />
+            <Route exact path="/" component={DiscoverList} />
+            
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/signin" component={Signin} />
-            <Route exact path="/:id" component={MovieDetail} />
+            
+            <Route exact path="/watch-list" component={WatchList} />
+            <Route exact path="/watch-list/:id" component={WatchListDetail} />
+            
+            <Route exact path="/:id" component={DiscoverDetail} />
           </Switch>
         </App>
       </Fragment>

@@ -1,62 +1,60 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import { Poster } from "./Movie";
 import Overdrive from "react-overdrive";
-import * as actions from '../actions';
-import { connect } from "react-redux";
 
-class MovieDetail extends Component {
-  render() {
-    const POSTER_PATH = "http://image.tmdb.org/t/p/w185";
-    const BACKDROP_PATH = "http://image.tmdb.org/t/p/w1280";
+const MovieDetails = ({ movie, authenticated, addMovieToWatchList, type }) => {
+  const POSTER_PATH = "http://image.tmdb.org/t/p/w185";
+  const BACKDROP_PATH = "http://image.tmdb.org/t/p/w1280";
 
-    const { movie } = this.props;
-
-    return (
-      <Fragment>
-        <BackdropContainer
-          backdrop={`${BACKDROP_PATH}${movie.backdrop_path}`}
-        />
-        <DetailInfo>
-          <Overdrive id={String(movie.id)}>
-            <Poster
-              src={`${POSTER_PATH}${movie.poster_path}`}
-              alt="poster"
-              style={{ boxShadow: "0 5px 30px black" }}
-            />
-          </Overdrive>
-          <div id="info">
-            <h1>{movie.title}</h1>
-            <div id="infoAttr">
-              <p className="first">{movie.release_date}</p>
-              <p>
-                {movie.vote_average}
-                /10
-              </p>
-            </div>
-
-          </div>
-        </DetailInfo>
-
-
-        <Description>
-          <p>{movie.overview}</p>
-        </Description>
-      </Fragment>
-    );
-  }
-}
-
-function mapStateToProps({ movies }, ownProps) {
-  return {
-    movie: movies[ownProps.match.params.id]
+  const renderAddMovieButton = () => {
+    if (authenticated && type === 'movie') {
+      return (
+        <button onClick={handleAddMovieClick}>
+        Add Movie to Watch List</button>
+      )
+    }
   };
-}
 
-export default connect(
-  mapStateToProps,
-  actions
-)(MovieDetail);
+  const handleAddMovieClick = () => {
+    addMovieToWatchList(movie);
+  };
+
+  return (
+    <Fragment>
+      <BackdropContainer
+        backdrop={`${BACKDROP_PATH}${movie.backdrop_path}`}
+      />
+      <DetailInfo>
+        <Overdrive id={String(movie.id)}>
+          <Poster
+            src={`${POSTER_PATH}${movie.poster_path}`}
+            alt="poster"
+            style={{ boxShadow: "0 5px 30px black" }}
+          />
+        </Overdrive>
+        <div id="info">
+          <h1>{movie.title}</h1>
+          <div id="infoAttr">
+            <p className="first">{movie.release_date}</p>
+            <p>
+              {movie.vote_average}
+              /10
+            </p>
+            {renderAddMovieButton()}
+          </div>
+        </div>
+      </DetailInfo>
+
+
+      <Description>
+        <p>{movie.overview}</p>
+      </Description>
+    </Fragment>
+  )
+};
+
+export default MovieDetails;
 
 const BackdropContainer = styled.div`
   position: relative;

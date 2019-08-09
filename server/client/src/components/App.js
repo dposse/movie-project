@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+  
   render() {
     return (
       <AppContainer>
@@ -20,5 +24,5 @@ export default withRouter(connect(
 )(App));
 
 const AppContainer = styled.div`
-  padding-top: 90px;
+  padding-top: 100px;
 `;

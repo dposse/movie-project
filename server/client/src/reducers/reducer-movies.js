@@ -5,6 +5,8 @@ import { normalize, schema } from 'normalizr';
 export default function(state = {}, action) {
   switch (action.type) {
     case FETCH_MOVIES:
+    console.log(action.payload)
+
       const movie = new schema.Entity('movies');
       const mySchema = { results: [ movie ] };
 

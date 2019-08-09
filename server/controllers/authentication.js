@@ -13,12 +13,19 @@ exports.signin = function(req, res, next) {
   // We just need to give them a token
   res.send({
     token: tokenForUser(req.user),
-    email: req.user.email
+    email: req.user.email,
+    watchList: req.user.watchList
   })
 }
 
 exports.currentUser = function(req, res) {
-  res.send(req.user)
+  const user = {
+    email: req.user.email,
+    token: tokenForUser(req.user),
+    watchList: req.user.watchList
+  }
+
+  res.send(user)
 }
 
 exports.signup = function(req, res, next) {

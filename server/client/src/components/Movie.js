@@ -5,9 +5,9 @@ import Overdrive from "react-overdrive";
 
 const POSTER_PATH = "http://image.tmdb.org/t/p/w185";
 
-const Movie = (props) => {
+const Movie = (props) => {  
   return (
-    <Link to={`/${props.id}`}>
+    <Link to={`/${props.path}${props.id}`}>
       <Overdrive id={String(props.id)}>
         <Poster src={`${POSTER_PATH}${props.img}`} alt={props.title} />
       </Overdrive>
